@@ -1,7 +1,9 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { UserNavbarComponent } from '../user-navbar/user-navbar.component';
+import { HttpClient } from '@angular/common/http';
+import { UserServiceService } from '../../services/user-service.service';
 
 @Component({
   selector: 'app-userprofile',
@@ -9,49 +11,81 @@ import { UserNavbarComponent } from '../user-navbar/user-navbar.component';
   templateUrl: './userprofile.component.html',
   styleUrl: './userprofile.component.css'
 })
-export class UserprofileComponent {
+export class UserprofileComponent implements OnInit {
   user = {
-    profilePic: "",
-    name: "",
-    gender: "",
-    dob: "",
-    email: "",
-    phone: "",
-    qualification: "",
-    skills: "",
+    name: '',
+    email: '',
+    gender: '',
+    dateOfBirth: '',
+    education: '',
+    experience: '',
+    skills: '',
+    profilePhoto: '', // Add profile photo URL or path here
+    cv: '', // Add CV URL or path here
   };
+  selectedProfilePic: File | null = null;
+  selectedResume: File | null = null;
+  saved: boolean = false;
+  editMode: boolean = false;
+  jobSeekerId: number = 1; // You can dynamically assign the jobSeekerId here based on the logged-in user
 
-  editMode = false;
-  saved = false;
-  selectedResume: string = '';
+  constructor(private userService: UserServiceService, private http: HttpClient) {}
 
+  ngOnInit() {
+    this.getUserProfile();
+  }
+
+  // Fetch the profile details using getProfile method
+  getUserProfile() {
+    this.userService.getProfile(this.jobSeekerId).subscribe((profile) => {
+      if (profile) {
+        this.user = profile;
+      }
+    });
+  }
+
+  // Toggle the edit mode to enable/disable profile editing
   toggleEditMode() {
     this.editMode = !this.editMode;
   }
 
+  // Handle the change event for profile picture
   onProfilePicChange(event: any) {
-    const file = event.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = () => this.user.profilePic = reader.result as string;
-      reader.readAsDataURL(file);
-    }
+    this.selectedProfilePic = event.target.files[0];
   }
 
+  // Handle the change event for resume file
   onResumeChange(event: any) {
-    const file = event.target.files[0];
-    if (file) {
-      this.selectedResume = file.name;
-    }
+    this.selectedResume = event.target.files[0];
   }
 
+  // Save the profile by calling updateProfile method
   saveProfile() {
-    this.saved = true;
-    this.editMode = false;
+    const formData = new FormData();
+    formData.append('name', this.user.name);
+    formData.append('email', this.user.email);
+    formData.append('gender', this.user.gender);
+    formData.append('dateOfBirth', this.user.dateOfBirth);
+    formData.append('education', this.user.education);
+    formData.append('experience', this.user.experience);
+    formData.append('skills', this.user.skills);
 
-    // Simulate API call to save data
-    setTimeout(() => {
-      this.saved = false;
-    }, 3000);
+    if (this.selectedProfilePic) {
+      formData.append('profilePhoto', this.selectedProfilePic, this.selectedProfilePic.name);
+    }
+    if (this.selectedResume) {
+      formData.append('cv', this.selectedResume, this.selectedResume.name);
+    }
+
+    // Call the updateProfile method to update the user profile
+    this.userService.updateProfile(this.jobSeekerId, formData).subscribe(
+      (response) => {
+        this.saved = true;
+        this.toggleEditMode();
+      },
+      (error) => {
+        console.error('Error saving profile:', error);
+      }
+    );
   }
 }

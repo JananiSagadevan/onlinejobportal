@@ -15,33 +15,38 @@ export class UserloginComponent {
     email: '',
     password: ''
   };
-
+  
   errorMessage: string = '';
   successMessage: string = '';
-
+  
   constructor(private authService: AuthService, private router: Router) {}
-
+  
   onSubmit() {
     if (!this.loginData.email || !this.loginData.password) {
       this.errorMessage = 'Email and password are required.';
+      this.successMessage = '';
       return;
     }
-
+  
     this.authService.loginUser(this.loginData).subscribe({
       next: (response: any) => {
-        if (response && response.errorStatusCode === 1) {
-          this.successMessage = 'Login successful!';
-          sessionStorage.setItem('loggedInUser', JSON.stringify(response));
+        if (response && response.status === 'success') {
+          this.successMessage = response.message || 'Login successful!';
+          this.errorMessage = '';
+  
+          const user = response.data;
+          sessionStorage.setItem('loggedInUser', JSON.stringify(user));
           this.router.navigate(['/userdashboard']);
         } else {
-          this.errorMessage = response.errorMessage || 'Login failed';
+          this.errorMessage = response.message || 'Login failed.';
+          this.successMessage = '';
         }
       },
       error: (error) => {
-        this.errorMessage = 'An error occurred during login';
+        this.errorMessage = 'An error occurred during login.';
+        this.successMessage = '';
         console.error(error);
       }
     });
   }
-  }
-
+}  

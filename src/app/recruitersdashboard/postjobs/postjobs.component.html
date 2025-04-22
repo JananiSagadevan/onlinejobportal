@@ -2,77 +2,91 @@
     <!-- Sidebar Navbar -->
     <app-rec-navbar></app-rec-navbar>
 
+    <div class="main-content">
+        <h2 class="text-center">Post a Job</h2>
 
-        <div class="main-content">
-            <h2 class="text-center">Post a Job</h2>
-    
-            <!-- Job Form -->
-            <div class="job-form-container">
-                <form [formGroup]="jobForm" (ngSubmit)="addJob()">
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="jobName">Job Name</label>
-                            <input type="text" id="jobName" formControlName="jobName">
-                        </div>
-                        <div class="form-group">
-                            <label for="jobDescription">Job Description</label>
-                            <input type="text" id="jobDescription" formControlName="jobDescription">
-                        </div>
-                        <div class="form-group">
-                            <label for="salary">Salary</label>
-                            <input type="text" id="salary" formControlName="salary">
-                        </div>
+        <!-- Job Form -->
+        <div class="job-form-container">
+            <form [formGroup]="jobForm" (ngSubmit)="addJob()">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="jobTitle">Job Title</label>
+                        <input type="text" id="jobTitle" formControlName="jobTitle">
                     </div>
-    
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="location">Location</label>
-                            <input type="text" id="location" formControlName="location">
-                        </div>
-                        <div class="form-group">
-                            <label for="jobType">Job Type</label>
-                            <select id="jobType" formControlName="jobType">
-                                <option value="Full-time">Full-time</option>
-                                <option value="Part-time">Part-time</option>
-                                <option value="Remote">Remote</option>
-                            </select>
-                        </div>
+                    <div class="form-group">
+                        <label for="companyName">Company Name</label>
+                        <input type="text" id="companyName" formControlName="companyName">
                     </div>
-    
-                    <button type="submit" class="btn btn-success">
-                        {{ isEditing ? 'Update Job' : 'Post Job' }}
-                    </button>
-                </form>
-            </div>
-    
-            <!-- Job Table -->
-            <h3 class="mt-4">Job Listings</h3>
-            <div class="table-container">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Job Name</th>
-                            <th>Description</th>
-                            <th>Salary</th>
-                            <th>Location</th>
-                            <th>Type</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr *ngFor="let job of jobs; let i = index">
-                            <td>{{ job.jobName }}</td>
-                            <td>{{ job.jobDescription }}</td>
-                            <td>{{ job.salary }}</td>
-                            <td>{{ job.location }}</td>
-                            <td>{{ job.jobType }}</td>
-                            <td>
-                                <button class="btn-edit" (click)="editJob(i)">Edit</button>
-                                <button class="btn-delete" (click)="deleteJob(i)">Delete</button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+                    <div class="form-group">
+                        <label for="location">Location</label>
+                        <input type="text" id="location" formControlName="location">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="employmentType">Employment Type</label>
+                        <select id="employmentType" formControlName="employmentType">
+                            <option value="Full-time">Full-time</option>
+                            <option value="Part-time">Part-time</option>
+                            <option value="Remote">Remote</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="description">Job Description</label>
+                        <textarea id="description" formControlName="description"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="requirements">Requirements</label>
+                        <textarea id="requirements" formControlName="requirements"></textarea>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="applicationDeadline">Application Deadline</label>
+                        <input type="date" id="applicationDeadline" formControlName="applicationDeadline">
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-success">
+                    {{ isEditing ? 'Update Job' : 'Post Job' }}
+                </button>
+            </form>
+        </div>
+
+        <!-- Job Table -->
+        <h3 class="mt-4">Job Listings</h3>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Company</th>
+                        <th>Location</th>
+                        <th>Type</th>
+                        <th>Description</th>
+                        <th>Requirements</th>
+                        <th>Deadline</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let job of jobs; let i = index">
+                        <td>{{ job.jobTitle }}</td>
+                        <td>{{ job.companyName }}</td>
+                        <td>{{ job.location }}</td>
+                        <td>{{ job.employmentType }}</td>
+                        <td>{{ job.description }}</td>
+                        <td>{{ job.requirements }}</td>
+                        <td>{{ job.applicationDeadline | date }}</td>
+                        <td>
+                            <button class="btn-edit" (click)="editJob(i)">Edit</button>
+                            <button class="btn-delete" (click)="deleteJob(job.jobId)">Delete</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div>
+</div>

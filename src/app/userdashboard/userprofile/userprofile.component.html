@@ -10,7 +10,7 @@
       <!-- Profile Picture Section -->
       <div class="profile-card text-center">
         <div class="profile-pic">
-          <img [src]="user.profilePic || 'assets/default-avatar.png'" alt="Profile Picture">
+          <img [src]="user.profilePhoto || 'assets/default-avatar.png'" alt="Profile Picture">
           <div *ngIf="editMode">
             <input type="file" (change)="onProfilePicChange($event)" class="form-control mt-2">
           </div>
@@ -46,11 +46,7 @@
           </div>
           <div class="col-md-6 mt-3">
             <label>Date of Birth</label>
-            <input type="date" class="form-control" [(ngModel)]="user.dob" [disabled]="!editMode">
-          </div>
-          <div class="col-md-6 mt-3">
-            <label>Phone Number</label>
-            <input type="text" class="form-control" [(ngModel)]="user.phone" [disabled]="!editMode">
+            <input type="date" class="form-control" [(ngModel)]="user.dateOfBirth" [disabled]="!editMode">
           </div>
         </div>
       </div>
@@ -61,7 +57,7 @@
         <hr>
         <div class="form-group">
           <label>Qualification</label>
-          <input type="text" class="form-control" [(ngModel)]="user.qualification" [disabled]="!editMode">
+          <input type="text" class="form-control" [(ngModel)]="user.education" [disabled]="!editMode">
         </div>
       </div>
 
@@ -71,6 +67,15 @@
         <hr>
         <div class="form-group">
           <input type="text" class="form-control" [(ngModel)]="user.skills" [disabled]="!editMode" placeholder="Enter skills separated by commas">
+        </div>
+      </div>
+
+      <!-- Experience Section -->
+      <div class="card p-3 shadow-sm mt-4">
+        <h5>Experience</h5>
+        <hr>
+        <div class="form-group">
+          <input type="text" class="form-control" [(ngModel)]="user.experience" [disabled]="!editMode" placeholder="Enter experience details">
         </div>
       </div>
 

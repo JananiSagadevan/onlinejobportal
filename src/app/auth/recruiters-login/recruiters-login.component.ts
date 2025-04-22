@@ -38,9 +38,10 @@ export class RecruitersLoginComponent {
         
         if (res?.success) {
           this.errorMessage = '';
-          localStorage.setItem("RecruiterId",res.data.recruiterId);
+          console.log(res);
+          localStorage.setItem("recruiterId",res.data.recruiterId);
         localStorage.setItem("loggedRecruiter",res.data);
-        console.log(localStorage.getItem("RecruiterId"));
+        console.log(localStorage.getItem("recruiterId"));
         console.log(res);
           alert('Login Successful');
           this.router.navigate(['/dashboard']); // adjust route
