@@ -1,0 +1,78 @@
+<div class="dashboard-container">
+    <!-- Sidebar Navbar -->
+    <app-rec-navbar></app-rec-navbar>
+
+
+        <div class="main-content">
+            <h2 class="text-center">Post a Job</h2>
+    
+            <!-- Job Form -->
+            <div class="job-form-container">
+                <form [formGroup]="jobForm" (ngSubmit)="addJob()">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="jobName">Job Name</label>
+                            <input type="text" id="jobName" formControlName="jobName">
+                        </div>
+                        <div class="form-group">
+                            <label for="jobDescription">Job Description</label>
+                            <input type="text" id="jobDescription" formControlName="jobDescription">
+                        </div>
+                        <div class="form-group">
+                            <label for="salary">Salary</label>
+                            <input type="text" id="salary" formControlName="salary">
+                        </div>
+                    </div>
+    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="location">Location</label>
+                            <input type="text" id="location" formControlName="location">
+                        </div>
+                        <div class="form-group">
+                            <label for="jobType">Job Type</label>
+                            <select id="jobType" formControlName="jobType">
+                                <option value="Full-time">Full-time</option>
+                                <option value="Part-time">Part-time</option>
+                                <option value="Remote">Remote</option>
+                            </select>
+                        </div>
+                    </div>
+    
+                    <button type="submit" class="btn btn-success">
+                        {{ isEditing ? 'Update Job' : 'Post Job' }}
+                    </button>
+                </form>
+            </div>
+    
+            <!-- Job Table -->
+            <h3 class="mt-4">Job Listings</h3>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Job Name</th>
+                            <th>Description</th>
+                            <th>Salary</th>
+                            <th>Location</th>
+                            <th>Type</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let job of jobs; let i = index">
+                            <td>{{ job.jobName }}</td>
+                            <td>{{ job.jobDescription }}</td>
+                            <td>{{ job.salary }}</td>
+                            <td>{{ job.location }}</td>
+                            <td>{{ job.jobType }}</td>
+                            <td>
+                                <button class="btn-edit" (click)="editJob(i)">Edit</button>
+                                <button class="btn-delete" (click)="deleteJob(i)">Delete</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>

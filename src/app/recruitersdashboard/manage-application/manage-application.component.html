@@ -1,0 +1,76 @@
+<div class="dashboard-container">
+    <!-- Sidebar -->
+    
+    <app-rec-navbar></app-rec-navbar>
+    <!-- Main Content -->
+    <div class="main-content">
+      <h3 class="dashboard-title">Manage Job Applications</h3>
+    
+    <!-- Search & Filter -->
+    <div class="row mb-3">
+      <div class="col-md-4">
+        <input type="text" [(ngModel)]="searchText" class="form-control" placeholder="Search by name or job title">
+      </div>
+      <div class="col-md-3">
+        <select [(ngModel)]="selectedStatus" class="form-control">
+          <option value="">All Statuses</option>
+          <option>Pending</option>
+          <option>Shortlisted</option>
+          <option>Interview Scheduled</option>
+          <option>Rejected</option>
+        </select>
+      </div>
+    </div>
+  
+    <!-- Applications Table -->
+    <table class="table table-bordered">
+      <thead class="thead-dark">
+        <tr>
+          <th>Name</th>
+          <th>Job Title</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let app of filteredApplications">
+          <td>{{ app.name }}</td>
+          <td>{{ app.jobTitle }}</td>
+          <td>
+            <select [(ngModel)]="app.status" class="form-control" (change)="updateStatus(app, app.status)">
+              <option>Pending</option>
+              <option>Shortlisted</option>
+              <option>Interview Scheduled</option>
+              <option>Rejected</option>
+            </select>
+          </td>
+          <td>
+            <button class="btn btn-info btn-sm" (click)="viewApplicant(app)" data-toggle="modal" data-target="#applicantModal">View</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  
+  <!-- Modal for Viewing Applicant Details -->
+  <div class="modal fade" id="applicantModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Applicant Details</h5>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body" *ngIf="selectedApplicant">
+          <p><strong>Name:</strong> {{ selectedApplicant.name }}</p>
+          <p><strong>Email:</strong> {{ selectedApplicant.email }}</p>
+          <p><strong>Job Applied:</strong> {{ selectedApplicant.jobTitle }}</p>
+          <p><strong>Resume:</strong> <a href="{{selectedApplicant.resume}}" target="_blank">View Resume</a></p>
+          <hr>
+          <h6>Schedule Interview</h6>
+          <input type="date" [(ngModel)]="interviewDate" class="form-control">
+          <button class="btn btn-primary mt-2" (click)="scheduleInterview()">Schedule</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  

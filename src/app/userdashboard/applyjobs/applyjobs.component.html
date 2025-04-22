@@ -1,0 +1,54 @@
+<div class="dashboard-container">
+  <!-- Sidebar Navbar -->
+  <app-user-navbar></app-user-navbar>
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <h2 class="text-center dashboard-title">Apply for Jobs</h2>
+
+  <!-- Search & Filter Section -->
+  <div class="filter-section">
+      <input type="text" [(ngModel)]="searchKeyword" (input)="filterJobs()" placeholder="Search Job Title..." class="form-control">
+      
+      <select [(ngModel)]="selectedLocation" (change)="filterJobs()" class="form-control">
+          <option value="">All Locations</option>
+          <option *ngFor="let loc of uniqueLocations()" [value]="loc">{{ loc }}</option>
+      </select>
+  </div>
+
+  <!-- Job Listings -->
+  <div *ngFor="let job of filteredJobs" class="job-card">
+      <h3>{{ job.title }}</h3>
+      <p><strong>Company:</strong> {{ job.company }}</p>
+      <p><strong>Description:</strong> {{ job.description }}</p>
+      <p><strong>Salary:</strong> ₹{{ job.salary }}</p>
+      <p><strong>Location:</strong> {{ job.location }}</p>
+      <p><strong>Type:</strong> {{ job.type }}</p>
+      
+      <button [disabled]="job.applied" (click)="applyJob(job)" class="btn btn-success">
+          {{ job.applied ? 'Applied' : 'Apply Now' }}
+      </button>
+    
+      
+    </div>
+  </div>   
+  
+</div>
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,111 @@
+/* Header Styling */
+
+.navbar {
+    padding: 15px;
+    background-color: rgb(11, 189, 189) !important;
+   
+}
+
+
+.navbar-brand {
+    font-size: 1.5rem;
+}
+
+.navbar-nav .nav-link {
+    font-size: 1.2rem;
+    cursor: pointer;
+}
+
+/* Home Section */
+*#home {
+    position: relative;
+    background: url('/j4.avif') no-repeat center center/cover;
+    background-size: cover;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    text-align: center;
+    padding: 150px;
+    height: 100vh;
+}
+
+/* Adding a dark overlay for better readability */
+/*#home::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4); /* Adjust the darkness (0.6 for dim effect) */
+    /*z-index: 1;
+}*/
+
+/* Ensuring content is above the dimmed background */
+#home .content {
+    position: relative;
+    z-index: 2;
+}
+
+
+#home h1 {
+    font-size: 3rem;
+    color:black
+   
+}
+
+#home p {
+    font-size: 1.5rem;
+    color: black;
+}
+
+
+
+
+h1 {
+    font-size: 2.5rem;
+}
+
+.lead {
+    font-size: 1.2rem;
+}
+
+.btn {
+    font-size: 1.2rem;
+    padding: 12px 20px;
+}
+
+
+/* Job Seeker & Recruiter Boxes */
+ .col-md-5 {
+    background-color: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+    /* Spacing Between Boxes */
+ .row .col-md-5 {
+    margin: 40px 40px;
+} /* Adds space between the boxes */
+
+/* Make it Responsive */
+
+
+
+
+/* About Section */
+.about h2 {
+    font-size: 2rem;
+}
+
+.about h4 {
+    font-size: 1.5rem;
+    margin-top: 20px;
+}
+
+.about p {
+    font-size: 1rem;
+    color: #555;
+}

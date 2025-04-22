@@ -1,0 +1,98 @@
+<div class="dashboard-container">
+  <!-- Sidebar Navbar -->
+  <app-user-navbar></app-user-navbar>
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <h2 class="text-center dashboard-title">User Profile</h2>
+
+    <div class="profile-container">
+      <!-- Profile Picture Section -->
+      <div class="profile-card text-center">
+        <div class="profile-pic">
+          <img [src]="user.profilePic || 'assets/default-avatar.png'" alt="Profile Picture">
+          <div *ngIf="editMode">
+            <input type="file" (change)="onProfilePicChange($event)" class="form-control mt-2">
+          </div>
+        </div>
+        <h4 class="mt-2">{{ user.name }}</h4>
+        <p class="text-muted">{{ user.email }}</p>
+      </div>
+
+      <!-- Edit Button -->
+      <div class="text-end mt-3">
+        <button class="btn btn-outline-primary" (click)="toggleEditMode()">
+          <i class="fa fa-pencil"></i> {{ editMode ? 'Cancel Edit' : 'Edit Profile' }}
+        </button>
+      </div>
+
+      <!-- Personal Information -->
+      <div class="card p-3 shadow-sm">
+        <h5>Personal Information</h5>
+        <hr>
+        <div class="row">
+          <div class="col-md-6">
+            <label>Name</label>
+            <input type="text" class="form-control" [(ngModel)]="user.name" [disabled]="!editMode">
+          </div>
+          <div class="col-md-6">
+            <label>Gender</label>
+            <select class="form-control" [(ngModel)]="user.gender" [disabled]="!editMode">
+              <option value="">Select</option>
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+          <div class="col-md-6 mt-3">
+            <label>Date of Birth</label>
+            <input type="date" class="form-control" [(ngModel)]="user.dob" [disabled]="!editMode">
+          </div>
+          <div class="col-md-6 mt-3">
+            <label>Phone Number</label>
+            <input type="text" class="form-control" [(ngModel)]="user.phone" [disabled]="!editMode">
+          </div>
+        </div>
+      </div>
+
+      <!-- Education Details -->
+      <div class="card p-3 shadow-sm mt-4">
+        <h5>Education</h5>
+        <hr>
+        <div class="form-group">
+          <label>Qualification</label>
+          <input type="text" class="form-control" [(ngModel)]="user.qualification" [disabled]="!editMode">
+        </div>
+      </div>
+
+      <!-- Skills Section -->
+      <div class="card p-3 shadow-sm mt-4">
+        <h5>Skills</h5>
+        <hr>
+        <div class="form-group">
+          <input type="text" class="form-control" [(ngModel)]="user.skills" [disabled]="!editMode" placeholder="Enter skills separated by commas">
+        </div>
+      </div>
+
+      <!-- Resume Upload Section -->
+      <div class="card p-3 shadow-sm mt-4">
+        <h5>Resume Upload</h5>
+        <hr>
+        <div class="form-group">
+          <input type="file" class="form-control" (change)="onResumeChange($event)" [disabled]="!editMode">
+          <p *ngIf="selectedResume" class="text-muted mt-2">Selected File: {{ selectedResume }}</p>
+        </div>
+      </div>
+
+      <!-- Save Button -->
+      <div class="text-center mt-4" *ngIf="editMode">
+        <button class="btn btn-success" (click)="saveProfile()">Save Profile</button>
+      </div>
+
+      <!-- Success Message -->
+      <div *ngIf="saved" class="alert alert-success mt-3 text-center">
+        Profile saved successfully!
+      </div>
+    </div>
+  </div>
+</div>

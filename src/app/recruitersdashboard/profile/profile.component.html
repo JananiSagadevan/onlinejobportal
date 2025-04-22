@@ -1,0 +1,80 @@
+<div class="dashboard-container">
+  <!-- Sidebar -->
+  <app-rec-navbar></app-rec-navbar>
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <h3 class="dashboard-title">Recruiter Profile</h3>
+
+    <!-- Edit Button -->
+    <div class="text-end mb-3">
+      <button class="btn btn-outline-primary" (click)="toggleEditMode()">
+        <i class="fa fa-pencil"></i> Edit Profile
+      </button>
+    </div>
+
+    <div class="row">
+      <!-- Left Column -->
+      <div class="col-md-6">
+        <div class="card p-3 shadow-sm">
+          <h5>Company Details</h5>
+          <hr>
+          <div class="form-group">
+            <label>Company Name</label>
+            <input type="text" class="form-control" [(ngModel)]="recruiter.companyName" [disabled]="!editMode">
+          </div>
+
+          <div class="form-group mt-3">
+            <label>Company Location</label>
+            <input type="text" class="form-control" [(ngModel)]="recruiter.location" [disabled]="!editMode">
+          </div>
+        </div>
+
+        <div class="card p-3 mt-4 shadow-sm">
+          <h5>Contact Information</h5>
+          <hr>
+          <div class="form-group">
+            <label>Recruiter Name</label>
+            <input type="text" class="form-control" [(ngModel)]="recruiter.recruiterName" [disabled]="!editMode">
+          </div>
+
+          <div class="form-group mt-3">
+            <label>Email</label>
+            <input type="email" class="form-control" [(ngModel)]="recruiter.email" [disabled]="!editMode">
+          </div>
+
+          <div class="form-group mt-3">
+            <label>Designation</label>
+            <input type="text" class="form-control" [(ngModel)]="recruiter.designation" [disabled]="!editMode">
+          </div>
+
+          <div class="form-group mt-3">
+            <label>Contact Number</label>
+            <input type="tel" class="form-control" [(ngModel)]="recruiter.contact" [disabled]="!editMode">
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Column -->
+      <div class="col-md-6">
+        <div class="card p-3 shadow-sm">
+          <h5>About Company</h5>
+          <hr>
+          <div class="form-group">
+            <textarea class="form-control" rows="5" [(ngModel)]="recruiter.description" [disabled]="!editMode"></textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Save Button -->
+    <div class="text-center mt-4" *ngIf="editMode">
+      <button class="btn btn-success" (click)="saveProfile()">Save Profile</button>
+    </div>
+
+    <!-- Success Message -->
+    <div *ngIf="saved" class="alert alert-success mt-3 text-center">
+      Profile saved successfully!
+    </div>
+  </div>
+</div>

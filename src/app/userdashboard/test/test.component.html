@@ -1,0 +1,40 @@
+<div class="dashboard-container">
+  <!-- Sidebar Navbar -->
+  <app-user-navbar></app-user-navbar>
+
+  <!-- Main Content -->
+  <div class="main-content">
+    
+      <h2 class="text-center dashboard-title">Psychometric Test - Skill Assessment</h2>
+    
+      <div *ngIf="!completed">
+        <h4>{{ questions[currentQuestionIndex].question }}</h4>
+    
+        <div class="list-group">
+          <button 
+            *ngFor="let option of questions[currentQuestionIndex].options" 
+            class="list-group-item list-group-item-action" 
+            [class.active]="isSelected(option)"
+            (click)="selectOption(option)">
+            {{ option }}
+          </button>
+        </div>
+    
+        <button class="btn btn-primary mt-3" (click)="nextQuestion()">Next</button>
+      </div>
+    
+      <div *ngIf="completed" class="text-center mt-4">
+        <h3>Test Completed!</h3>
+        <p class="alert alert-info">{{ recommendations }}</p>
+      </div>
+    </div>
+      
+  
+</div>
+
+
+
+
+
+
+  

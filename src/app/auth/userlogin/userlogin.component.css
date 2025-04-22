@@ -1,0 +1,12 @@
+.container {
+    height: 100vh;
+}
+
+.card {
+    width: 400px;
+    border-radius: 12px;
+}
+
+.btn-primary {
+    font-size: 18px;
+}

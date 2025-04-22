@@ -1,0 +1,40 @@
+<app-homenavbar></app-homenavbar>
+<div class="container mt-10">
+    <div class="card p-4 shadow" style="max-width: 400px; margin: auto;">
+      <h3 class="text-center">Recruiter Register</h3>
+  
+      <form [formGroup]="registerForm">
+        <div class="mb-3">
+          <label>Name</label>
+          <input type="text" class="form-control" formControlName="Name">
+        </div>
+        <div class="mb-3">
+          <label>Email ID</label>
+          <input type="email" class="form-control" formControlName="email">
+        </div>
+  
+        <div class="mb-3">
+          <label>Password</label>
+          <input type="password" class="form-control" formControlName="password">
+        </div>
+  
+        <div class="mb-3">
+          <label>Confirm Password</label>
+          <input type="password" class="form-control" formControlName="confirmPassword">
+        </div>
+  
+        <div class="mb-3">
+          <label>Company Name</label>
+          <input type="text" class="form-control" formControlName="companyName">
+        </div>
+  
+        
+  
+        <button type="button" class="btn btn-success w-100" (click)="register()">Register</button>
+      </form>
+  
+      <p class="text-danger text-center mt-2" *ngIf="errorMessage">{{ errorMessage }}</p>
+      <p class="text-success text-center mt-2" *ngIf="successMessage">{{ successMessage }}</p>
+    </div>
+  </div>
+  

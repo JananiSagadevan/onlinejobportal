@@ -1,0 +1,75 @@
+<!-- Header -->
+<nav class="navbar navbar-expand-lg navbar-light bg-primary fixed-top">
+    <div class="container">
+        <a class="navbar-brand text-white fw-bold" href="#">Online Job Portal</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="/dashboard">Dashboard</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="/userdashboard">userDashboard</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="#home">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="#about">About</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="/user-login">Login</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- Main Section with Background Image -->
+<div id="home" >
+    <div class="bg-overlay">
+        <h1 class="fw-bold">Welcome to Online Job Portal</h1>
+        <p class="lead">Your one-stop solution for finding jobs and hiring top talent efficiently.</p>
+        
+        <div class="row mt-4">
+            <!-- Job Seeker Section -->
+            <div class="col-md-6">
+                <h3 class="text-primary">Job Seekers</h3>
+                <a href="/userlogin" class="btn btn-primary btn-lg me-2">Login</a>
+                <a href="/user-register" class="btn btn-outline-primary btn-lg">Register</a>
+            </div>
+
+            <!-- Recruiter Section -->
+            <div class="col-md-6">
+                <h3 class="text-success">Recruiters</h3>
+                <a href="/recruiters-login" class="btn btn-success btn-lg me-2">Login</a>
+                <a href="/recruiters-register" class="btn btn-outline-success btn-lg">Register</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- About Section -->
+<section id="about" class="about py-5 bg-light text-center">
+    <div class="container">
+        <h2 class="mb-4">About Online Job Portal</h2>
+        <p class="lead">Our platform connects job seekers with employers, providing seamless job search and hiring experiences.</p>
+        <div class="row mt-4">
+            <div class="col-md-4">
+                <h4>🔍 Find Your Dream Job</h4>
+                <p>Search and apply for jobs that match your skills and preferences.</p>
+            </div>
+            <div class="col-md-4">
+                <h4>📋 Easy Application Process</h4>
+                <p>Submit resumes, track applications, and get interview updates in one place.</p>
+            </div>
+            <div class="col-md-4">
+                <h4>🤝 Connect with Employers</h4>
+                <p>Recruiters can post job openings and find the right candidates quickly.</p>
+            </div>
+        </div>
+    </div>
+</section>
