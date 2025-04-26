@@ -3,89 +3,81 @@ import { Component, OnInit } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { UserNavbarComponent } from '../user-navbar/user-navbar.component';
 import { HttpClient } from '@angular/common/http';
-import { UserServiceService } from '../../services/user-service.service';
+import { JobSeekerProfile, UserServiceService } from '../../services/user-service.service';
 
 @Component({
   selector: 'app-userprofile',
-  imports: [ReactiveFormsModule,CommonModule,FormsModule,UserNavbarComponent],
+  imports: [ReactiveFormsModule, CommonModule, FormsModule, UserNavbarComponent],
   templateUrl: './userprofile.component.html',
-  styleUrl: './userprofile.component.css'
+  styleUrls: ['./userprofile.component.css']
 })
 export class UserprofileComponent implements OnInit {
-  user = {
-    name: '',
-    email: '',
-    gender: '',
+  user: JobSeekerProfile = {
+    jobSeekerId: 1, // Replace with actual logged-in user ID
     dateOfBirth: '',
+    gender: '',
+    address: '',
     education: '',
     experience: '',
     skills: '',
-    profilePhoto: '', // Add profile photo URL or path here
-    cv: '', // Add CV URL or path here
+    profilePhoto: '',
+    cv: ''
   };
-  selectedProfilePic: File | null = null;
-  selectedResume: File | null = null;
-  saved: boolean = false;
-  editMode: boolean = false;
-  jobSeekerId: number = 1; // You can dynamically assign the jobSeekerId here based on the logged-in user
+  isEditMode = false;
+  message = '';
+  selectedResume: string = '';
+  saved = false;
 
-  constructor(private userService: UserServiceService, private http: HttpClient) {}
+  constructor(private jobSeekerService: UserServiceService) {}
 
-  ngOnInit() {
-    this.getUserProfile();
+  ngOnInit(): void {
+    this.getProfile();
   }
 
-  // Fetch the profile details using getProfile method
-  getUserProfile() {
-    this.userService.getProfile(this.jobSeekerId).subscribe((profile) => {
-      if (profile) {
-        this.user = profile;
+  getProfile(): void {
+    this.jobSeekerService.getProfile(this.user.jobSeekerId).subscribe(response => {
+      if (response.profile) {
+        this.user = response.profile;
       }
     });
   }
 
-  // Toggle the edit mode to enable/disable profile editing
-  toggleEditMode() {
-    this.editMode = !this.editMode;
+  toggleEditMode(): void {
+    this.isEditMode = !this.isEditMode;
   }
 
-  // Handle the change event for profile picture
-  onProfilePicChange(event: any) {
-    this.selectedProfilePic = event.target.files[0];
-  }
-
-  // Handle the change event for resume file
-  onResumeChange(event: any) {
-    this.selectedResume = event.target.files[0];
-  }
-
-  // Save the profile by calling updateProfile method
-  saveProfile() {
-    const formData = new FormData();
-    formData.append('name', this.user.name);
-    formData.append('email', this.user.email);
-    formData.append('gender', this.user.gender);
-    formData.append('dateOfBirth', this.user.dateOfBirth);
-    formData.append('education', this.user.education);
-    formData.append('experience', this.user.experience);
-    formData.append('skills', this.user.skills);
-
-    if (this.selectedProfilePic) {
-      formData.append('profilePhoto', this.selectedProfilePic, this.selectedProfilePic.name);
-    }
-    if (this.selectedResume) {
-      formData.append('cv', this.selectedResume, this.selectedResume.name);
-    }
-
-    // Call the updateProfile method to update the user profile
-    this.userService.updateProfile(this.jobSeekerId, formData).subscribe(
-      (response) => {
+  onSubmit(): void {
+    if (this.isEditMode) {
+      this.jobSeekerService.updateProfile(this.user.jobSeekerId, this.user).subscribe(response => {
+        this.message = response.message;
+        this.isEditMode = false; // Return to view mode
+        this.saved = true; // Show success message
+      });
+    } else {
+      this.jobSeekerService.createProfile(this.user).subscribe(response => {
+        this.message = response.message;
+        this.isEditMode = false;
         this.saved = true;
-        this.toggleEditMode();
-      },
-      (error) => {
-        console.error('Error saving profile:', error);
-      }
-    );
+      });
+    }
+  }
+
+  onProfilePicChange(event: any): void {
+    const file = event.target.files[0];
+    if (file) {
+      // Update profile photo URL or handle file upload as per your requirement
+      this.user.profilePhoto = URL.createObjectURL(file); // For demo purposes
+    }
+  }
+
+  onResumeChange(event: any): void {
+    const file = event.target.files[0];
+    if (file) {
+      this.selectedResume = file.name;
+    }
+  }
+
+  saveProfile(): void {
+    this.onSubmit();
   }
 }

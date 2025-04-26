@@ -20,4 +20,6 @@ export class JobsServiceService {
   getJobsByRecruiter(recruiterId: number): Observable<any[]> {
     return this.http.get<any>(`${this.baseUrl}/api/Recruiter/getjobbyrecruiter?recruiterId=${recruiterId}`);
   }
+  
+
 }

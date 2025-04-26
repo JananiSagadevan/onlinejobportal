@@ -1,26 +1,36 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-
+export interface JobSeekerProfile {
+  profileId?: number;
+  jobSeekerId: number;
+  dateOfBirth: string;
+  gender?: string;
+  address?: string;
+  education?: string;
+  experience?: string;
+  skills?: string;
+  profilePhoto?: string;
+  cv?: string;
+}
 @Injectable({
   providedIn: 'root'
 })
 export class UserServiceService {
 
-  private apiUrl = 'https://localhost:5001/api/jobseeker'; // Adjust your base URL
+  private baseUrl = 'http://localhost:5174/api/User'; // Adjust as needed
 
   constructor(private http: HttpClient) {}
 
-  createProfile(profile: any): Observable<any> {
-    return this.http.post(`${this.apiUrl}/createprofile`, profile);
+  createProfile(profile: JobSeekerProfile): Observable<any> {
+    return this.http.post(`${this.baseUrl}/createprofile`, profile);
   }
 
   getProfile(jobSeekerId: number): Observable<any> {
-    let params = new HttpParams().set('jobSeekerId', jobSeekerId.toString());
-    return this.http.get(`${this.apiUrl}/GetProfile`, { params });
+    return this.http.get(`${this.baseUrl}/GetProfile?jobSeekerId=${jobSeekerId}`);
   }
 
-  updateProfile(jobSeekerId: number, profile: any): Observable<any> {
-    return this.http.put(`${this.apiUrl}/UpdateProfile?jobSeekerId=${jobSeekerId}`, profile);
+  updateProfile(jobSeekerId: number, profile: JobSeekerProfile): Observable<any> {
+    return this.http.put(`${this.baseUrl}/UpdateProfile?jobSeekerId=${jobSeekerId}`, profile);
   }
 }

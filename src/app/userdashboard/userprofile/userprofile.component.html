@@ -11,18 +11,18 @@
       <div class="profile-card text-center">
         <div class="profile-pic">
           <img [src]="user.profilePhoto || 'assets/default-avatar.png'" alt="Profile Picture">
-          <div *ngIf="editMode">
+          <div *ngIf="isEditMode">
             <input type="file" (change)="onProfilePicChange($event)" class="form-control mt-2">
           </div>
         </div>
-        <h4 class="mt-2">{{ user.name }}</h4>
-        <p class="text-muted">{{ user.email }}</p>
+        <h4 class="mt-2">Janani</h4>
+        <p class="text-muted">Janani</p>
       </div>
 
       <!-- Edit Button -->
       <div class="text-end mt-3">
         <button class="btn btn-outline-primary" (click)="toggleEditMode()">
-          <i class="fa fa-pencil"></i> {{ editMode ? 'Cancel Edit' : 'Edit Profile' }}
+          <i class="fa fa-pencil"></i> {{ isEditMode ? 'Cancel Edit' : 'Edit Profile' }}
         </button>
       </div>
 
@@ -33,11 +33,11 @@
         <div class="row">
           <div class="col-md-6">
             <label>Name</label>
-            <input type="text" class="form-control" [(ngModel)]="user.name" [disabled]="!editMode">
+            <input type="text" class="form-control"  [disabled]="!isEditMode">
           </div>
           <div class="col-md-6">
             <label>Gender</label>
-            <select class="form-control" [(ngModel)]="user.gender" [disabled]="!editMode">
+            <select class="form-control" [(ngModel)]="user.gender" [disabled]="!isEditMode">
               <option value="">Select</option>
               <option value="Male">Male</option>
               <option value="Female">Female</option>
@@ -46,7 +46,7 @@
           </div>
           <div class="col-md-6 mt-3">
             <label>Date of Birth</label>
-            <input type="date" class="form-control" [(ngModel)]="user.dateOfBirth" [disabled]="!editMode">
+            <input type="date" class="form-control" [(ngModel)]="user.dateOfBirth" [disabled]="!isEditMode">
           </div>
         </div>
       </div>
@@ -57,7 +57,7 @@
         <hr>
         <div class="form-group">
           <label>Qualification</label>
-          <input type="text" class="form-control" [(ngModel)]="user.education" [disabled]="!editMode">
+          <input type="text" class="form-control" [(ngModel)]="user.education" [disabled]="!isEditMode">
         </div>
       </div>
 
@@ -66,7 +66,7 @@
         <h5>Skills</h5>
         <hr>
         <div class="form-group">
-          <input type="text" class="form-control" [(ngModel)]="user.skills" [disabled]="!editMode" placeholder="Enter skills separated by commas">
+          <input type="text" class="form-control" [(ngModel)]="user.skills" [disabled]="!isEditMode" placeholder="Enter skills separated by commas">
         </div>
       </div>
 
@@ -75,7 +75,7 @@
         <h5>Experience</h5>
         <hr>
         <div class="form-group">
-          <input type="text" class="form-control" [(ngModel)]="user.experience" [disabled]="!editMode" placeholder="Enter experience details">
+          <input type="text" class="form-control" [(ngModel)]="user.experience" [disabled]="!isEditMode" placeholder="Enter experience details">
         </div>
       </div>
 
@@ -84,13 +84,13 @@
         <h5>Resume Upload</h5>
         <hr>
         <div class="form-group">
-          <input type="file" class="form-control" (change)="onResumeChange($event)" [disabled]="!editMode">
+          <input type="file" class="form-control" (change)="onResumeChange($event)" [disabled]="!isEditMode">
           <p *ngIf="selectedResume" class="text-muted mt-2">Selected File: {{ selectedResume }}</p>
         </div>
       </div>
 
       <!-- Save Button -->
-      <div class="text-center mt-4" *ngIf="editMode">
+      <div class="text-center mt-4" *ngIf="isEditMode">
         <button class="btn btn-success" (click)="saveProfile()">Save Profile</button>
       </div>
 

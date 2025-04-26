@@ -3,52 +3,128 @@
   <app-user-navbar></app-user-navbar>
 
   <!-- Main Content -->
-  <div class="main-content">
-    <h2 class="text-center dashboard-title">Apply for Jobs</h2>
+  <div class="main-content p-4">
+    <h2 class="text-center dashboard-title mb-4">Apply for Jobs</h2>
 
-  <!-- Search & Filter Section -->
-  <div class="filter-section">
-      <input type="text" [(ngModel)]="searchKeyword" (input)="filterJobs()" placeholder="Search Job Title..." class="form-control">
-      
-      <select [(ngModel)]="selectedLocation" (change)="filterJobs()" class="form-control">
-          <option value="">All Locations</option>
-          <option *ngFor="let loc of uniqueLocations()" [value]="loc">{{ loc }}</option>
+    <!-- Search & Filter Section -->
+    <div class="filter-section d-flex flex-wrap gap-3 mb-4">
+      <input
+        type="text"
+        [(ngModel)]="searchKeyword"
+        (input)="filterJobs()"
+        placeholder="Search Job Title..."
+        class="form-control flex-fill"
+      />
+      <select
+        [(ngModel)]="selectedLocation"
+        (change)="filterJobs()"
+        class="form-control w-auto"
+      >
+        <option value="">All Locations</option>
+        <option *ngFor="let loc of uniqueLocations()" [value]="loc">{{ loc }}</option>
       </select>
-  </div>
-
-  <!-- Job Listings -->
-  <div *ngFor="let job of filteredJobs" class="job-card">
-      <h3>{{ job.title }}</h3>
-      <p><strong>Company:</strong> {{ job.company }}</p>
-      <p><strong>Description:</strong> {{ job.description }}</p>
-      <p><strong>Salary:</strong> ₹{{ job.salary }}</p>
-      <p><strong>Location:</strong> {{ job.location }}</p>
-      <p><strong>Type:</strong> {{ job.type }}</p>
-      
-      <button [disabled]="job.applied" (click)="applyJob(job)" class="btn btn-success">
-          {{ job.applied ? 'Applied' : 'Apply Now' }}
-      </button>
-    
-      
     </div>
-  </div>   
-  
+
+    <!-- Job Listings -->
+    <div *ngFor="let job of filteredJobs" class="card job-card mb-4 shadow-sm p-3">
+      <div class="card-body">
+        <h4 class="card-title">{{ job.jobTitle }}</h4>
+        <h6 class="text-muted mb-2">{{ job.companyName }} - {{ job.location }}</h6>
+
+        <p class="mb-2">
+          <strong>Type:</strong> {{ job.employmentType }}
+        </p>
+        <p class="mb-2">
+          <strong>Description:</strong> {{ job.description | slice:0:150 }}...
+        </p>
+        <p class="mb-2">
+          <strong>Posted On:</strong> {{ job.postedDate | date:'mediumDate' }}
+        </p>
+        <p class="mb-3">
+          <strong>Deadline:</strong> {{ job.applicationDeadline | date:'mediumDate' }}
+        </p>
+
+        <button [disabled]="job.applied" (click)="applyJob(job)" class="btn btn-success">
+          {{ job.applied ? 'Applied' : 'Apply Now' }}
+        </button>
+      </div>
+    </div>
+
+    <!-- No jobs found message -->
+    <div *ngIf="!filteredJobs.length && !loading" class="alert alert-info text-center">
+      No jobs match your search or filters.
+    </div>
+  </div>
 </div>
 
+<!-- Apply Popup -->
+<!-- Job Application Modal -->
+<div class="modal fade" id="applyModal" tabindex="-1" aria-labelledby="applyModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <form (ngSubmit)="submitApplication()">
+        <div class="modal-header">
+          <h5 class="modal-title" id="applyModalLabel">Apply for {{ selectedJob?.jobTitle }}</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body row g-3">
+          <input type="hidden" [(ngModel)]="applicationForm.jobId" name="jobId" />
 
+          <div class="col-md-6">
+            <label>Resume URL</label>
+            <input type="text" class="form-control" [(ngModel)]="applicationForm.resumeUrl" name="resumeUrl" />
+          </div>
 
+          <div class="col-md-6">
+            <label>Cover Letter</label>
+            <textarea class="form-control" [(ngModel)]="applicationForm.coverLetter" name="coverLetter"></textarea>
+          </div>
 
+          <div class="col-md-6">
+            <label>Education</label>
+            <input type="text" class="form-control" [(ngModel)]="applicationForm.education" name="education" />
+          </div>
 
+          <div class="col-md-6">
+            <label>Experience</label>
+            <input type="text" class="form-control" [(ngModel)]="applicationForm.experience" name="experience" />
+          </div>
 
-  
+          <div class="col-md-6">
+            <label>Skills</label>
+            <input type="text" class="form-control" [(ngModel)]="applicationForm.skills" name="skills" />
+          </div>
 
+          <div class="col-md-6">
+            <label>Profile Summary</label>
+            <input type="text" class="form-control" [(ngModel)]="applicationForm.profileSummary" name="profileSummary" />
+          </div>
 
+          <div class="col-md-6">
+            <label>Mobile</label>
+            <input type="text" class="form-control" [(ngModel)]="applicationForm.mobile" name="mobile" />
+          </div>
 
+          <div class="col-md-6">
+            <label>Gender</label>
+            <select class="form-control" [(ngModel)]="applicationForm.gender" name="gender">
+              <option value="">Select</option>
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+            </select>
+          </div>
 
-
-
-
-
-
+          <div class="col-md-6">
+            <label>Date of Birth</label>
+            <input type="date" class="form-control" [(ngModel)]="applicationForm.dateOfBirth" name="dateOfBirth" />
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary">Submit Application</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
 
 
