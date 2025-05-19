@@ -1,7 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RecNavbarComponent } from '../rec-navbar/rec-navbar.component';
+import { JobsServiceService } from '../../services/jobs-service.service';
 
 @Component({
   selector: 'app-manage-application',
@@ -9,43 +10,77 @@ import { RecNavbarComponent } from '../rec-navbar/rec-navbar.component';
   templateUrl: './manage-application.component.html',
   styleUrl: './manage-application.component.css'
 })
-export class ManageApplicationComponent {
-  applications = [
-    { id: 1, name: 'Alice Johnson', jobTitle: 'Software Engineer', status: 'Pending', email: 'alice@example.com', resume: 'resume-alice.pdf' },
-    { id: 2, name: 'John Doe', jobTitle: 'Data Analyst', status: 'Interview Scheduled', email: 'john@example.com', resume: 'resume-john.pdf' },
-    { id: 3, name: 'Emily Brown', jobTitle: 'Frontend Developer', status: 'Shortlisted', email: 'emily@example.com', resume: 'resume-emily.pdf' }
-  ];
+export class ManageApplicationComponent implements OnInit {
+  jobs: any[] = [];
+  applicants: any[] = [];
+  recruiterId: number = 0;
+  selectedJobId: number | null = null;
+  showModal: boolean = false;
+  errorMessage: string = '';
 
-  searchText = '';
-  selectedStatus = '';
-  selectedApplicant: any = null;
-  interviewDate: string = '';
+  constructor(
+    private recruiterService: JobsServiceService,
+    private applicationService: JobsServiceService
+  ) {}
 
-  // Filter applications by search term or status
-  get filteredApplications() {
-    return this.applications.filter(app =>
-      (app.name.toLowerCase().includes(this.searchText.toLowerCase()) ||
-        app.jobTitle.toLowerCase().includes(this.searchText.toLowerCase())) &&
-      (this.selectedStatus === '' || app.status === this.selectedStatus)
-    );
+  ngOnInit(): void {
+      this.recruiterId =Number(localStorage.getItem('recruiterId'));
+      this.loadJobs();
+    
   }
 
-  // Open Modal to View Applicant Details
-  viewApplicant(applicant: any) {
-    this.selectedApplicant = applicant;
+  loadJobs(): void {
+    this.recruiterService.getJobsByRecruiter(this.recruiterId).subscribe({
+      next: (res : any) => {
+        if (res.status === 'success') this.jobs = res.data;
+        else this.errorMessage = res.message;
+      },
+      error: (err) => {
+        console.error(err);
+        this.errorMessage = 'Failed to fetch jobs.';
+      }
+    });
   }
 
-  // Update Application Status
-  updateStatus(applicant: any, newStatus: string) {
-    applicant.status = newStatus;
+  openApplicantModal(jobId: number): void {
+    this.selectedJobId = jobId;
+    this.showModal = true;
+
+    this.applicationService.getApplicantsByJob(jobId).subscribe({
+      next: (res) => {
+        this.applicants = res;
+        this.applicants.forEach((app: any) => {
+          app.updatedStatus = app.currentStatus;
+        });
+      },
+      error: (err) => {
+        console.error(err);
+        this.applicants = [];
+      }
+    });
   }
 
-  // Schedule Interview
-  scheduleInterview() {
-    if (this.selectedApplicant) {
-      this.selectedApplicant.status = 'Interview Scheduled';
-      alert(`Interview scheduled with ${this.selectedApplicant.name} on ${this.interviewDate}`);
-      this.interviewDate = '';
-    }
+  closeModal(): void {
+    this.showModal = false;
+    this.selectedJobId = null;
+    this.applicants = [];
+  }
+
+  updateStatus(applicant: any): void {
+    const payload = {
+      applicationId: applicant.applicationId,
+      currentStatus: applicant.updatedStatus
+    };
+    console.log(payload);
+    this.applicationService.updateApplicationStatus(payload).subscribe({
+      next: (res) => {
+        applicant.currentStatus = payload.currentStatus;
+        alert('Status updated successfully');
+      },
+      error: (err) => {
+        console.error(err);
+        alert('Failed to update status');
+      }
+    });
   }
 }

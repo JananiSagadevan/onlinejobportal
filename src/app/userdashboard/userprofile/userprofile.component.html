@@ -10,13 +10,13 @@
       <!-- Profile Picture Section -->
       <div class="profile-card text-center">
         <div class="profile-pic">
-          <img [src]="user.profilePhoto || 'assets/default-avatar.png'" alt="Profile Picture">
+          <img [src]="" alt="Profile Picture">
           <div *ngIf="isEditMode">
             <input type="file" (change)="onProfilePicChange($event)" class="form-control mt-2">
           </div>
         </div>
-        <h4 class="mt-2">Janani</h4>
-        <p class="text-muted">Janani</p>
+        <h4 class="mt-2">{{jobSeeker?.fullName}}</h4>
+        <p class="text-muted">{{jobSeeker?.email}}</p>
       </div>
 
       <!-- Edit Button -->
@@ -31,9 +31,10 @@
         <h5>Personal Information</h5>
         <hr>
         <div class="row">
-          <div class="col-md-6">
-            <label>Name</label>
-            <input type="text" class="form-control"  [disabled]="!isEditMode">
+
+          <div class="form-group">
+            <label>Address</label>
+            <input type="text" class="form-control" [(ngModel)]="user.address" [disabled]="!isEditMode">
           </div>
           <div class="col-md-6">
             <label>Gender</label>
@@ -66,7 +67,8 @@
         <h5>Skills</h5>
         <hr>
         <div class="form-group">
-          <input type="text" class="form-control" [(ngModel)]="user.skills" [disabled]="!isEditMode" placeholder="Enter skills separated by commas">
+          <input type="text" class="form-control" [(ngModel)]="user.skills" [disabled]="!isEditMode"
+            placeholder="Enter skills separated by commas">
         </div>
       </div>
 
@@ -75,7 +77,8 @@
         <h5>Experience</h5>
         <hr>
         <div class="form-group">
-          <input type="text" class="form-control" [(ngModel)]="user.experience" [disabled]="!isEditMode" placeholder="Enter experience details">
+          <input type="text" class="form-control" [(ngModel)]="user.experience" [disabled]="!isEditMode"
+            placeholder="Enter experience details">
         </div>
       </div>
 

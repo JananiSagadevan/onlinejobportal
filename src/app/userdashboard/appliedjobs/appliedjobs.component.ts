@@ -1,7 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { UserNavbarComponent } from '../user-navbar/user-navbar.component';
+import { AppliedJob, UserServiceService } from '../../services/user-service.service';
 
 @Component({
   selector: 'app-appliedjobs',
@@ -9,20 +10,30 @@ import { UserNavbarComponent } from '../user-navbar/user-navbar.component';
   templateUrl: './appliedjobs.component.html',
   styleUrl: './appliedjobs.component.css'
 })
-export class AppliedjobsComponent {
-  appliedJobs = [
-    { title: "Software Engineer", company: "Google", salary: 80000, location: "Bangalore", status: "Applied" },
-    { title: "Data Analyst", company: "Microsoft", salary: 70000, location: "Hyderabad", status: "Pending" },
-    { title: "Frontend Developer", company: "Amazon", salary: 75000, location: "Chennai", status: "Interview Shortlisted" },
-    { title: "Backend Developer", company: "Facebook", salary: 85000, location: "Pune", status: "Rejected" },
-    { title: "AI Engineer", company: "Tesla", salary: 90000, location: "Delhi", status: "Selected" }
-  ];
+export class AppliedjobsComponent implements OnInit {
+  appliedJobs: AppliedJob[] = [];
+  jobSeekerId = 2008; // Example hardcoded or from route/user session
 
+  constructor(private jobAppService: UserServiceService) {}
+
+  ngOnInit(): void {
+    this.jobAppService.getApplicationsByJobSeeker(this.jobSeekerId).subscribe({
+      next: (data) => {
+        // Flatten job structure so it's easier to use in template
+        this.appliedJobs = data.map((item: any) => ({
+          application: item.application,
+          job: item.job.job  // extract only the job details
+        }));
+        console.log(this.appliedJobs);
+      },
+      error: (err) => console.error('Error loading applied jobs', err)
+    });
+  }
   getProgressClass(status: string): string {
     switch (status) {
-      case "Applied": return "bg-info";
+      case "Reviewed": return "bg-info";
       case "Pending": return "bg-warning";
-      case "Interview Shortlisted": return "bg-primary";
+      case "Interview Scheduled": return "bg-primary";
       case "Rejected": return "bg-danger";
       case "Selected": return "bg-success";
       default: return "bg-secondary";
@@ -31,13 +42,17 @@ export class AppliedjobsComponent {
 
   getProgressWidth(status: string): string {
     switch (status) {
-      case "Applied": return "20%";
-      case "Pending": return "40%";
-      case "Interview Shortlisted": return "60%";
+      case "Reviewed": return "40%";
+      case "Pending": return "20%";
+      case "Interview Scheduled": return "60%";
       case "Rejected": return "100%";
       case "Selected": return "100%";
       default: return "0%";
     }
   }
-
+  
 }
+
+  
+
+

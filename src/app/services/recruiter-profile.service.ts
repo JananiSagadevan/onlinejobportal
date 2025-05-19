@@ -33,4 +33,6 @@ export class RecruiterProfileService {
   updateProfile(profile: RecruiterProfile): Observable<any> {
     return this.http.put(`${this.baseUrl}/updateprofile`, profile);
   }
+  
 }
+

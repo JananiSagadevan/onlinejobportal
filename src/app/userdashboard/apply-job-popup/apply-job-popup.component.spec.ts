@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { UserlogoutComponent } from './userlogout.component';
+import { ApplyJobPopupComponent } from './apply-job-popup.component';
 
-describe('UserlogoutComponent', () => {
-  let component: UserlogoutComponent;
-  let fixture: ComponentFixture<UserlogoutComponent>;
+describe('ApplyJobPopupComponent', () => {
+  let component: ApplyJobPopupComponent;
+  let fixture: ComponentFixture<ApplyJobPopupComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [UserlogoutComponent]
+      imports: [ApplyJobPopupComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(UserlogoutComponent);
+    fixture = TestBed.createComponent(ApplyJobPopupComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

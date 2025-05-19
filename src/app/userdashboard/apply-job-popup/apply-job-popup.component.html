@@ -1,0 +1,61 @@
+<div class="modal show d-block" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Confirm Application Details</h5>
+          <button type="button" class="btn-close" (click)="onClose()"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label>Education</label>
+            <input [(ngModel)]="applicationData.education" class="form-control" />
+          </div>
+          <div class="mb-3">
+            <label>Experience</label>
+            <input [(ngModel)]="applicationData.experience" class="form-control" />
+          </div>
+          <div class="mb-3">
+            <label>Skills</label>
+            <input [(ngModel)]="applicationData.skills" class="form-control" />
+          </div>
+          <div class="mb-3">
+            <label>Profile Summary</label>
+            <textarea [(ngModel)]="applicationData.profileSummary" class="form-control" rows="3"></textarea>
+          </div>
+          <div class="mb-3">
+            <label>Mobile</label>
+            <input [(ngModel)]="applicationData.mobile" class="form-control" />
+          </div>
+          <div class="mb-3">
+            <label>Gender</label>
+            <select [(ngModel)]="applicationData.gender" class="form-control">
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label>Date of Birth</label>
+            <input type="date" [(ngModel)]="applicationData.dateOfBirth" class="form-control" />
+          </div>
+          <div class="mb-3">
+            <label>Cover Letter</label>
+            <textarea [(ngModel)]="applicationData.coverLetter" class="form-control" rows="4"></textarea>
+          </div>
+          <div class="mb-3">
+            <label>Resume</label>
+            <a [href]="applicationData.resumeUrl" target="_blank" class="btn btn-link">View Resume</a>
+          </div>
+          <div class="mb-3">
+            <label>Profile Picture</label><br />
+            <img [src]="applicationData.profilePictureUrl" alt="Profile Picture" width="100" height="100" class="rounded border" />
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" (click)="onClose()">Cancel</button>
+          <button type="button" class="btn btn-primary" (click)="onSubmit()">Submit Application</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  

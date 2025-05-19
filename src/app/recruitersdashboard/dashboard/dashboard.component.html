@@ -1,32 +1,33 @@
 <div class="dashboard-container">
-    <!-- Sidebar -->
-    
-    <app-rec-navbar></app-rec-navbar>
-    <!-- Main Content -->
-    <div class="main-content">
-      <h3 class="dashboard-title">Recruiter Dashboard</h3>
-      
-  
-      <div class="card-container">
-        <div class="stat-card" style="background-color: #4caf50;">
-          <h5>Applications Received</h5>
-          <h2>20</h2>
-        </div>
+  <app-rec-navbar></app-rec-navbar>
+  <!-- Main Content -->
+  <div class="main-content">
+    <h3 class="dashboard-title">Recruiter Dashboard</h3>
 
-        <div class="stat-card" style="background-color: #e91e63;">
-          <h5>Test Taken</h5>
-          <h2>15</h2>
-        </div>
-        <div class="stat-card" style="background-color: #2196f3;">
-          <h5>Active Jobs</h5>
-          <h2>7</h2>
-        </div>
-        
-        <div class="stat-card" style="background-color: #ff9800;">
-          <h5>Shortlisted Candidates</h5>
-          <h2>5</h2>
-        </div>
-      </div>
+    <div class="welcome-container">
+      <h3 class="welcome-message">Welcome </h3>
     </div>
+    
+
+    <div class="card-container">
+      <div class="stat-card" style="background-color: #fcfcfc;">
+        <h5>Applications Received</h5>
+        <h2>{{ stats?.applicationsreceived ?? 0 }}</h2>
+      </div>
+
+      <div class="stat-card" style="background-color: #ffffff;">
+        <h5>Total Jobs</h5>
+        <h2>{{ stats?.totalJobs ?? 0 }}</h2>
+      </div>
+      <div class="stat-card" style="background-color: #ffffff;">
+        <h5>Active Jobs</h5>
+        <h2>{{ stats?.activeJobs ?? 0 }}</h2>
+      </div>
+      
+      <div class="stat-card" style="background-color: #ffffff;">
+        <h5>Pending Candidates</h5>
+        <h2>{{ stats?.pendingApplications ?? 0 }}</h2>
+      </div>
+    </div>  
   </div>
-  
+</div>

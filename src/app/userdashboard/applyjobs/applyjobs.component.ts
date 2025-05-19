@@ -1,8 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { UserNavbarComponent } from '../user-navbar/user-navbar.component';
+import { JobsServiceService } from '../../services/jobs-service.service';
+import { JobSeekerProfile, UserServiceService } from '../../services/user-service.service';
+import { ApplyJobPopupComponent } from '../apply-job-popup/apply-job-popup.component';
 
 interface Job {
   jobId: number;
@@ -18,41 +21,61 @@ interface Job {
   applied: boolean;
 }
 
+
 @Component({
   selector: 'app-applyjobs',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule, FormsModule, UserNavbarComponent],
+  imports: [ReactiveFormsModule, CommonModule, FormsModule, UserNavbarComponent,ApplyJobPopupComponent],
   templateUrl: './applyjobs.component.html',
   styleUrls: ['./applyjobs.component.css']
 })
 export class ApplyjobsComponent implements OnInit {
-  jobs: Job[] = [];
-  filteredJobs: Job[] = [];
-  searchKeyword: string = '';
-  selectedLocation: string = '';
-  message: string = '';
-  loading: boolean = true;
 
-  selectedJob: Job | null = null;
+  applyForm: FormGroup;
+  isSubmitting = false;
+  selectedResume: File | null = null;
+  selectedProfilePicture: File | null = null;
+  showPopup = false;
+  currentApplicationData: any = null;
 
-  resumeFile: File | null = null;
-  profilePictureFile: File | null = null;
+  user: JobSeekerProfile = {
+      jobSeekerId: 0, // Replace with actual logged-in user ID
+      dateOfBirth: '',
+      gender: '',
+      address: '',
+      education: '',
+      experience: '',
+      skills: '',
+      profilePhoto: '',
+      cv: ''
+    };
+  jobs: any[] = []; // Assume you fetch jobs
+  filteredJobs: any[] = [];
+  loading = false;
 
-  // Form object bound via ngModel
-  applicationForm: any = {
-    jobId: null,
-    resumeUrl: '',
-    coverLetter: '',
-    education: '',
-    experience: '',
-    skills: '',
-    profileSummary: '',
-    mobile: '',
-    gender: '',
-    dateOfBirth: ''
-  };
+  searchKeyword = '';
+  selectedLocation = '';
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private fb: FormBuilder,
+    private http: HttpClient,
+    private jobservice:JobsServiceService,
+    private jobSeekerService: UserServiceService
+    
+  ) {
+    this.applyForm = this.fb.group({
+      jobId: ['', Validators.required],
+      jobSeekerId: ['', Validators.required],
+      coverLetter: [''],
+      education: [''],
+      experience: [''],
+      skills: [''],
+      profileSummary: [''],
+      mobile: ['', Validators.required],
+      gender: [''],
+      dateOfBirth: ['']
+    });
+  }
 
   ngOnInit(): void {
     this.fetchJobs();
@@ -66,7 +89,7 @@ export class ApplyjobsComponent implements OnInit {
         this.loading = false;
       },
       error: (error) => {
-        this.message = "Failed to load jobs: " + (error.error?.message || 'Server error');
+       alert("Failed to load jobs: " + (error.error?.message || 'Server error'));
         this.loading = false;
       }
     });
@@ -75,91 +98,103 @@ export class ApplyjobsComponent implements OnInit {
   filterJobs() {
     this.filteredJobs = this.jobs.filter(job =>
       job.jobTitle.toLowerCase().includes(this.searchKeyword.toLowerCase()) &&
-      (this.selectedLocation === '' || job.location === this.selectedLocation)
+      (this.selectedLocation ? job.location === this.selectedLocation : true)
     );
   }
 
-  uniqueLocations(): string[] {
-    const locations = this.jobs.map(job => job.location).filter(loc => !!loc);
-    return [...new Set(locations)];
+  uniqueLocations() {
+    return [...new Set(this.jobs.map(job => job.location))];
   }
 
-  applyJob(job: Job) {
-    this.selectedJob = job;
-    this.applicationForm = {
-      jobId: job.jobId,
-      resumeUrl: '',
-      coverLetter: '',
-      education: '',
-      experience: '',
-      skills: '',
-      profileSummary: '',
-      mobile: '',
-      gender: '',
-      dateOfBirth: ''
-    };
-
-    // Open modal
-    const modal = new (window as any).bootstrap.Modal(document.getElementById('applyModal'));
-    modal.show();
-  }
-
-  onFileChange(event: any, type: string) {
-    const file = event.target.files[0];
-    if (type === 'resume') this.resumeFile = file;
-    if (type === 'profilePicture') this.profilePictureFile = file;
-  }
-
-  submitApplication() {
-    console.log(this.selectedJob);
+  // applyJob(job: any) {
+  //   const applicationData = {
+  //     applicationId: 0, // New application
+  //     jobId: job.jobId,
+  //     jobSeekerId: Number(localStorage.getItem('jobSeekerId')), // Replace with actual logged-in user's ID
+  //     coverLetter: 'I am excited to apply for this position because it aligns with my skills and career goals.',
+  //     education: 'B.Tech in Computer Science',
+  //     experience: '2 years as Frontend Developer at ABC Corp',
+  //     skills: 'Angular, TypeScript, HTML, CSS',
+  //     profileSummary: 'A highly motivated developer with a passion for building user-friendly web applications.',
+  //     mobile: '9876543210',
+  //     gender: 'Female',
+  //     dateOfBirth: '1999-05-20T00:00:00.000Z', // Ensure ISO format
+  //     currentStatus: 'Pending',
+  //     resumeUrl: 'https://example.com/dummy-resume.pdf',
+  //     profilePictureUrl: 'https://example.com/profile-picture.jpg',
+  //     appliedDate: new Date().toISOString() // Current timestamp in ISO format
+  //   };
     
-
-    const formData = new FormData();
-    formData.append('jobId', this.applicationForm.jobId);
-    formData.append('jobSeekerId', '1'); // Replace with actual user ID
-    formData.append('resume', '');
-    formData.append('coverLetter', this.applicationForm.coverLetter);
-    formData.append('education', this.applicationForm.education);
-    formData.append('experience', this.applicationForm.experience);
-    formData.append('skills', this.applicationForm.skills);
-    formData.append('profileSummary', this.applicationForm.profileSummary);
-    formData.append('mobile', this.applicationForm.mobile);
-    formData.append('gender', this.applicationForm.gender);
-    formData.append('dateOfBirth', this.applicationForm.dateOfBirth);
-    if (this.profilePictureFile) {
-      formData.append('profilePicture', this.profilePictureFile);
-    }
-    console.log('FormData:', formData); 
-    // Debugging line
-    this.http.post('http://localhost:5174/api/User/applyjobs', formData).subscribe({
-      next: () => {
-        this.selectedJob!.applied = true;
-        this.closePopup();
-      },
-      error: (err) => {
-        console.error('Application failed', err);
+  //     this.jobSeekerService.getProfile(Number(localStorage.getItem('jobSeekerId'))).subscribe(response => {
+  //       if (response.profile) {
+  //         this.user = response.profile;
+  //         console.log(this.user);
+  //       }
+  //     });
+    
+    
+  //   console.log(applicationData);
+  //   this.jobservice.applyForJob(applicationData).subscribe({
+  //     next: (response: any) => {
+  //       job.applied = true;
+  //       alert("Application submitted successfully.");
+  //     },
+  //     error: (err) => {
+  //       alert("Failed to apply: " + (err.error?.message || 'Server error'));
+  //     }
+  //   });
+  // }
+  applyJob(job: any) {
+    const jobSeekerId = Number(localStorage.getItem('jobSeekerId'));
+  
+    this.jobSeekerService.getProfile(jobSeekerId).subscribe({
+      next: (response) => {
+        if (response.profile) {
+          this.user = response.profile;
+  
+          this.currentApplicationData = {
+            applicationId: 0,
+            jobId: job.jobId,
+            jobSeekerId: jobSeekerId,
+            coverLetter: 'I am excited to apply for this position...',
+            education: this.user.education,
+            experience: this.user.experience,
+            skills: this.user.skills,
+            profileSummary: 'A motivated developer...',
+            mobile: '9876543210',
+            gender: this.user.gender,
+            dateOfBirth: new Date(this.user.dateOfBirth).toISOString(),
+            currentStatus: 'Pending',
+            resumeUrl: `https://your-server.com/uploads/${this.user.cv}`,
+            profilePictureUrl: this.user.profilePhoto,
+            appliedDate: new Date().toISOString()
+          };
+  
+          this.showPopup = true; // Show modal
+        }
       }
     });
   }
-
-  closePopup() {
-    const modal = new (window as any).bootstrap.Modal(document.getElementById('applyModal'));
-    modal.hide();
-
-    this.selectedJob = null;
-    this.resumeFile = null;
-    this.profilePictureFile = null;
-    this.applicationForm = {
-      jobId: null,
-      resumeUrl: '',
-      coverLetter: '',
-      education: '',
-      experience: '',
-      skills: '',
-      profileSummary: '',
-      mobile: '',
-      gender: '',
-      dateOfBirth: ''
-    };
+  onPopupSubmit(data: any) {
+    this.jobservice.applyForJob(data).subscribe({
+      next: (response) => {
+        const jobIndex = this.jobs.findIndex(j => j.jobId === data.jobId);
+        if (jobIndex !== -1) this.jobs[jobIndex].applied = true;
+        alert("Application submitted successfully.");
+        this.showPopup = false;
+      },
+      error: (err) => {
+        alert("Failed to apply: " + (err.error?.message || 'Server error'));
+      }
+    });
   }
+  
+  onPopupClose() {
+    this.showPopup = false;
+  }
+  
+  
+  
+  
+
 }

@@ -1,6 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { forkJoin, map, Observable, switchMap } from 'rxjs';
 export interface JobSeekerProfile {
   profileId?: number;
   jobSeekerId: number;
@@ -13,13 +13,47 @@ export interface JobSeekerProfile {
   profilePhoto?: string;
   cv?: string;
 }
+export interface JobApplication {
+  applicationId: number;
+  jobSeekerId: number;
+  jobId: number;
+  resumeUrl: string;
+  coverLetter: string;
+  appliedDate: Date;
+  currentStatus: string;
+  education: string;
+  experience: string;
+  skills: string;
+  profileSummary: string;
+  profilePictureUrl: string;
+  mobile: string;
+  gender: string;
+  dateOfBirth: Date;
+}
+export interface Job {
+  jobId: number;
+  recruiterId: number;
+  jobTitle: string;
+  companyName: string;
+  location: string;
+  employmentType: string;
+  description: string;
+  requirements: string;
+  postedDate: Date;
+  applicationDeadline: Date;
+}
+export interface AppliedJob {
+  application: JobApplication;
+  job: Job;
+}
+
 @Injectable({
   providedIn: 'root'
 })
 export class UserServiceService {
 
   private baseUrl = 'http://localhost:5174/api/User'; // Adjust as needed
-
+  private apiUrl = 'http://localhost:5174/api';
   constructor(private http: HttpClient) {}
 
   createProfile(profile: JobSeekerProfile): Observable<any> {
@@ -33,4 +67,32 @@ export class UserServiceService {
   updateProfile(jobSeekerId: number, profile: JobSeekerProfile): Observable<any> {
     return this.http.put(`${this.baseUrl}/UpdateProfile?jobSeekerId=${jobSeekerId}`, profile);
   }
+  uploadProfileWithCV(profileData: FormData): Observable<any> {
+    return this.http.post(`${this.apiUrl}/File/upload-image`, profileData);
+  }
+  
+  getApplicationsByJobSeeker(jobSeekerId: number): Observable<AppliedJob[]> {
+    return this.http
+      .get<JobApplication[]>(`${this.apiUrl}/Recruiter/GetApplicationsByJobSeekerbyid?jobSeekerId=${jobSeekerId}`)
+      .pipe(
+        switchMap((applications) => {
+          const combined: Observable<AppliedJob>[] = applications.map((app) =>
+            this.http.get<Job>(`${this.apiUrl}/User/GetJobById?jobId=${app.jobId}`).pipe(
+              map((job) => ({
+                application: app,
+                job: job
+              }))
+            )
+          );
+          return forkJoin(combined); // wait for all job detail requests
+        })
+      );
+  }
+  // getUserDashboardStats(jobSeekerId: number): Observable<any> {
+  //   return this.http.get(`${this.apiUrl}/api/User/user/{jobSeekerId}=${jobSeekerId}`);
+  // }
+  getDashboardStats(jobSeekerId: number): Observable<any> {
+    return this.http.get<any>(`http://localhost:5174/api/User/user/${jobSeekerId}`);
+  }
+  
 }

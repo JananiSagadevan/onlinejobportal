@@ -26,8 +26,10 @@
     </div>
 
     <!-- Job Listings -->
-    <div *ngFor="let job of filteredJobs" class="card job-card mb-4 shadow-sm p-3">
-      <div class="card-body">
+    <div class="job-grid">
+    <div class="row g-3">
+    <div *ngFor="let job of filteredJobs" class="col-md-4 card job-card mb-4 shadow-sm p-3">
+      <div class="card-body d-flex flex-column">
         <h4 class="card-title">{{ job.jobTitle }}</h4>
         <h6 class="text-muted mb-2">{{ job.companyName }} - {{ job.location }}</h6>
 
@@ -57,74 +59,13 @@
   </div>
 </div>
 
-<!-- Apply Popup -->
-<!-- Job Application Modal -->
-<div class="modal fade" id="applyModal" tabindex="-1" aria-labelledby="applyModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <form (ngSubmit)="submitApplication()">
-        <div class="modal-header">
-          <h5 class="modal-title" id="applyModalLabel">Apply for {{ selectedJob?.jobTitle }}</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body row g-3">
-          <input type="hidden" [(ngModel)]="applicationForm.jobId" name="jobId" />
 
-          <div class="col-md-6">
-            <label>Resume URL</label>
-            <input type="text" class="form-control" [(ngModel)]="applicationForm.resumeUrl" name="resumeUrl" />
-          </div>
+<app-apply-job-popup
+  *ngIf="showPopup"
+  [applicationData]="currentApplicationData"
+  (submitApplication)="onPopupSubmit($event)"
+  (closePopup)="onPopupClose()">
+</app-apply-job-popup>
 
-          <div class="col-md-6">
-            <label>Cover Letter</label>
-            <textarea class="form-control" [(ngModel)]="applicationForm.coverLetter" name="coverLetter"></textarea>
-          </div>
-
-          <div class="col-md-6">
-            <label>Education</label>
-            <input type="text" class="form-control" [(ngModel)]="applicationForm.education" name="education" />
-          </div>
-
-          <div class="col-md-6">
-            <label>Experience</label>
-            <input type="text" class="form-control" [(ngModel)]="applicationForm.experience" name="experience" />
-          </div>
-
-          <div class="col-md-6">
-            <label>Skills</label>
-            <input type="text" class="form-control" [(ngModel)]="applicationForm.skills" name="skills" />
-          </div>
-
-          <div class="col-md-6">
-            <label>Profile Summary</label>
-            <input type="text" class="form-control" [(ngModel)]="applicationForm.profileSummary" name="profileSummary" />
-          </div>
-
-          <div class="col-md-6">
-            <label>Mobile</label>
-            <input type="text" class="form-control" [(ngModel)]="applicationForm.mobile" name="mobile" />
-          </div>
-
-          <div class="col-md-6">
-            <label>Gender</label>
-            <select class="form-control" [(ngModel)]="applicationForm.gender" name="gender">
-              <option value="">Select</option>
-              <option value="Male">Male</option>
-              <option value="Female">Female</option>
-            </select>
-          </div>
-
-          <div class="col-md-6">
-            <label>Date of Birth</label>
-            <input type="date" class="form-control" [(ngModel)]="applicationForm.dateOfBirth" name="dateOfBirth" />
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button type="submit" class="btn btn-primary">Submit Application</button>
-        </div>
-      </form>
-    </div>
-  </div>
-</div>
 
 

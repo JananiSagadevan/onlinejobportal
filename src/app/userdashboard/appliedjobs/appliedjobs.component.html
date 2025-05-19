@@ -10,24 +10,22 @@
         <p>You haven't applied for any jobs yet.</p>
     </div>
 
-    <div *ngFor="let job of appliedJobs" class="job-card">
-        <h3>{{ job.title }}</h3>
-        <p><strong>Company:</strong> {{ job.company }}</p>
-        <p><strong>Salary:</strong> ₹{{ job.salary }}</p>
-        <p><strong>Location:</strong> {{ job.location }}</p>
-        <p><strong>Status:</strong> {{ job.status }}</p>
-
-        <!-- Progress bar -->
+    <div *ngFor="let aj of appliedJobs" class="applied-job-card">
+        <h3>{{ aj.job.jobTitle }} at {{ aj.job.companyName }}</h3>
+        <p><strong>Location:</strong> {{ aj.job.location }}</p>
+        <p><strong>Employment Type:</strong> {{ aj.job.employmentType }}</p>
+        <p><strong>Description:</strong> {{ aj.job.description }}</p>
+        <p><strong>Status:</strong> {{ aj.application.currentStatus }}</p>
+        <p><strong>Applied On:</strong> {{ aj.application.appliedDate | date }}</p>
         <div class="progress">
-            <div class="progress-bar" [ngClass]="getProgressClass(job.status)" [style.width]="getProgressWidth(job.status)">
-                {{ job.status }}
+            <div class="progress-bar" [ngClass]="getProgressClass(aj.application.currentStatus)" [style.width]="getProgressWidth(aj.application.currentStatus)">
+                {{ aj.application.currentStatus}}
             </div>
         </div>
-    </div>
-      
+        <hr />
+      </div>  
         
-      </div>
-        
+      </div>      
     
   </div>
   

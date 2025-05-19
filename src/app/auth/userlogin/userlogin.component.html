@@ -1,39 +1,63 @@
 <app-homenavbar></app-homenavbar>
+
 <div class="container d-flex justify-content-center align-items-center min-vh-100">
-    <div class="card p-4 shadow-lg" style="width: 400px;">
-        <h2 class="text-center mb-4 text-primary">Job Seeker Login</h2>
-        <div *ngIf="successMessage" class="alert alert-success alert-dismissible fade show" role="alert">
-            {{ successMessage }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-          </div>
-        
-          <!-- Error Alert -->
-          <div *ngIf="errorMessage" class="alert alert-danger alert-dismissible fade show" role="alert">
-            {{ errorMessage }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-          </div>
-        
-        <form (ngSubmit)="onSubmit()">
-            <!-- Email Input -->
-            <div class="mb-3">
-                <label for="email" class="form-label">Email</label>
-                <input type="email" id="email" class="form-control" [(ngModel)]="loginData.email" name="email" required>
-            </div>
+  <div class="card p-4 shadow-lg" style="width: 400px;">
+    <h2 class="text-center mb-4 text-primary">Job Seeker Login</h2>
 
-            <!-- Password Input -->
-            <div class="mb-3">
-                <label for="password" class="form-label">Password</label>
-                <input type="password" id="password" class="form-control" [(ngModel)]="loginData.password" name="password" required>
-            </div>
-
-            <!-- Submit Button -->
-            <button type="submit" class="btn btn-primary w-100">Login</button>
-        </form>
-
-        <!-- Sign-up Link -->
-        <p class="mt-3 text-center">
-            Don't have an account? 
-            <a routerLink="/user-register" class="text-primary">Sign Up</a>
-        </p>
+    <!-- Success Message -->
+    <div *ngIf="successMessage" class="alert alert-success alert-dismissible fade show" role="alert">
+      {{ successMessage }}
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
+
+    <!-- Error Message -->
+    <div *ngIf="errorMessage" class="alert alert-danger alert-dismissible fade show" role="alert">
+      {{ errorMessage }}
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+
+    <!-- Login Form -->
+    <form (ngSubmit)="login()" #loginForm="ngForm">
+      <!-- Email -->
+      <div class="mb-3">
+        <label for="email" class="form-label">Email</label>
+        <input
+          type="email"
+          id="email"
+          class="form-control"
+          name="email"
+          [(ngModel)]="email"
+          required
+        />
+      </div>
+
+      <!-- Password -->
+      <div class="mb-3">
+        <label for="password" class="form-label">Password</label>
+        <input
+          type="password"
+          id="password"
+          class="form-control"
+          name="password"
+          [(ngModel)]="password"
+          required
+        />
+      </div>
+
+      <!-- Submit Button -->
+      <button
+        type="submit"
+        class="btn btn-primary w-100"
+        [disabled]="isLoading || !loginForm.valid"
+      >
+        {{ isLoading ? 'Logging in...' : 'Login' }}
+      </button>
+    </form>
+
+    <!-- Register Link -->
+    <p class="mt-3 text-center">
+      Don't have an account?
+      <a routerLink="/user-register" class="text-primary">Sign Up</a>
+    </p>
+  </div>
 </div>

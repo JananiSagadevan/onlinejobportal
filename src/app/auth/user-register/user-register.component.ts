@@ -42,9 +42,10 @@ export class UserRegisterComponent  {
     // ⬇️ Call the API
     this.authService.registerUser(formData).subscribe({
       next: (response) => {
-        this.registrationSuccess = 'Registration successful! Redirecting to login...';
+        this.registrationSuccess = 'Registration successful! Redirecting to dashboard...';
         this.registrationFail = '';
         this.isSubmitting = false;
+        localStorage.setItem('FullName', response.name); 
 
         setTimeout(() => {
           this.router.navigate(['/userdashboard']);

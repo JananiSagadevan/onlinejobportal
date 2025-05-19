@@ -13,7 +13,7 @@ import { JobSeekerProfile, UserServiceService } from '../../services/user-servic
 })
 export class UserprofileComponent implements OnInit {
   user: JobSeekerProfile = {
-    jobSeekerId: 1, // Replace with actual logged-in user ID
+    jobSeekerId: 0, // Replace with actual logged-in user ID
     dateOfBirth: '',
     gender: '',
     address: '',
@@ -27,11 +27,19 @@ export class UserprofileComponent implements OnInit {
   message = '';
   selectedResume: string = '';
   saved = false;
-
+  jobSeeker: any;
   constructor(private jobSeekerService: UserServiceService) {}
 
   ngOnInit(): void {
+    this.user.jobSeekerId +=Number(localStorage.getItem('jobSeekerId'));
+    console.log(this.user.jobSeekerId);
     this.getProfile();
+    const userIn = localStorage.getItem('user');
+    console.log(userIn)
+  if (userIn) {
+    this.jobSeeker = JSON.parse(userIn); // 👈 Parse the string to an object
+    console.log(this.jobSeeker);
+  }
   }
 
   getProfile(): void {
@@ -50,8 +58,8 @@ export class UserprofileComponent implements OnInit {
     if (this.isEditMode) {
       this.jobSeekerService.updateProfile(this.user.jobSeekerId, this.user).subscribe(response => {
         this.message = response.message;
-        this.isEditMode = false; // Return to view mode
-        this.saved = true; // Show success message
+        this.isEditMode = false; 
+        this.saved = true; 
       });
     } else {
       this.jobSeekerService.createProfile(this.user).subscribe(response => {
@@ -70,12 +78,43 @@ export class UserprofileComponent implements OnInit {
     }
   }
 
-  onResumeChange(event: any): void {
-    const file = event.target.files[0];
-    if (file) {
-      this.selectedResume = file.name;
-    }
+  // onResumeChange(event: any): void {
+  //   const file = event.target.files[0];
+  //   if (file) {
+  //     this.selectedResume = file.name;
+  //   }
+  // }
+  cvFile: File | null = null; // Add this to your component
+
+onResumeChange(event: any): void {
+  const file = event.target.files[0];
+  if (file) {
+    this.selectedResume = file.name;
+    this.cvFile = file; // Store actual file
   }
+}
+
+// saveProfile(): void {
+//   if (this.cvFile) {
+//     const formData = new FormData();
+//     formData.append('jobSeekerId', this.user.jobSeekerId.toString());
+//     formData.append('dateOfBirth', this.user.dateOfBirth);
+//     formData.append('gender', this.user.gender || '');
+//     formData.append('address', this.user.address || '');
+//     formData.append('education', this.user.education || '');
+//     formData.append('experience', this.user.experience || '');
+//     formData.append('skills', this.user.skills || '');
+//     formData.append('cv', this.cvFile); // actual file
+
+//     this.jobSeekerService.uploadProfileWithCV(formData).subscribe(response => {
+//       this.message = response.message;
+//       this.saved = true;
+//       this.isEditMode = false;
+//     });
+//   } else {
+//     this.onSubmit(); // fallback if no file is selected
+//   }
+// }
 
   saveProfile(): void {
     this.onSubmit();

@@ -31,19 +31,7 @@
     height: 100vh;
 }
 
-/* Adding a dark overlay for better readability */
-/*#home::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.4); /* Adjust the darkness (0.6 for dim effect) */
-    /*z-index: 1;
-}*/
 
-/* Ensuring content is above the dimmed background */
 #home .content {
     position: relative;
     z-index: 2;
@@ -88,9 +76,7 @@ h1 {
     /* Spacing Between Boxes */
  .row .col-md-5 {
     margin: 40px 40px;
-} /* Adds space between the boxes */
-
-/* Make it Responsive */
+}
 
 
 
