@@ -12,17 +12,17 @@ import { AppliedJob, UserServiceService } from '../../services/user-service.serv
 })
 export class AppliedjobsComponent implements OnInit {
   appliedJobs: AppliedJob[] = [];
-  jobSeekerId = 2008; // Example hardcoded or from route/user session
+  jobSeekerId = 2008; 
 
   constructor(private jobAppService: UserServiceService) {}
 
   ngOnInit(): void {
     this.jobAppService.getApplicationsByJobSeeker(this.jobSeekerId).subscribe({
       next: (data) => {
-        // Flatten job structure so it's easier to use in template
+        
         this.appliedJobs = data.map((item: any) => ({
           application: item.application,
-          job: item.job.job  // extract only the job details
+          job: item.job.job  
         }));
         console.log(this.appliedJobs);
       },

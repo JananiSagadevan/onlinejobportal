@@ -16,7 +16,7 @@ export class PostjobsComponent implements OnInit {
   isEditing = false;
   selectedJobId: number | null = null;
 
-  recruiterId = Number(localStorage.getItem('recruiterId')); // 🔁 Replace with actual recruiter ID from auth/session
+  recruiterId = Number(localStorage.getItem('recruiterId')); 
 
   constructor(
     private fb: FormBuilder,
@@ -104,6 +104,6 @@ export class PostjobsComponent implements OnInit {
       applicationDeadline: job.applicationDeadline
     });
 
-    // You can implement updateJob() if needed
+
   }
 }

@@ -12,7 +12,7 @@ import { RecruiterProfile, RecruiterProfileService } from '../../services/recrui
 })
 export class ProfileComponent implements OnInit {
   recruiter: RecruiterProfile = {
-    recruiterId: 0, // You can assign from auth service or localStorage
+    recruiterId: 0,
     companyName: '',
     recruiterName: '',
     email: '',

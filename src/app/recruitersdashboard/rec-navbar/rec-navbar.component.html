@@ -1,4 +1,4 @@
-<div class="sidebar">
+<!-- <div class="sidebar">
     <h2>Job Portal</h2>
     <ul>
       <li class=""><i class="bi bi-person-workspace me-2"></i> <a class="nav-link text-white" href="/rec-dashboard">Recruiter Dashboard</a></li>
@@ -7,4 +7,31 @@
       <li><i class="bi bi-briefcase"></i><a class="nav-link text-white" href="/manage-application"> Manage Applications</a></li>
       <li><i class="bi bi-box-arrow-right"></i><a class="nav-link text-white" href="/"> Logout</a></li>
     </ul>
+</div> -->
+<div class="sidebar">
+  <h2>Job Portal</h2>
+  <ul>
+    <li routerLinkActive="active">
+      <i class="bi bi-person-workspace me-2"></i>
+      <button class="btn btn-link nav-link text-white p-0" [routerLink]="'/rec-dashboard'">Recruiter Dashboard</button>
+    </li>
+    <li routerLinkActive="active">
+      <i class="bi bi-person"></i>
+      <button class="btn btn-link nav-link text-white p-0" [routerLink]="'/profile'">Profile</button>
+    </li>
+    <li routerLinkActive="active">
+      <i class="bi bi-plus-circle"></i>
+      <button class="btn btn-link nav-link text-white p-0" [routerLink]="'/postjob'">Post Job</button>
+    </li>
+    <li routerLinkActive="active">
+      <i class="bi bi-briefcase"></i>
+      <button class="btn btn-link nav-link text-white p-0" [routerLink]="'/manage-application'">Manage Applications</button>
+    </li>
+    <li>
+      <i class="bi bi-box-arrow-right"></i>
+      <button class="btn btn-link nav-link text-white p-0" [routerLink]="'/'">Logout</button>
+    </li>
+  </ul>
 </div>
+
+

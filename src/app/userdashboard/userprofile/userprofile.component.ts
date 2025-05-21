@@ -13,7 +13,7 @@ import { JobSeekerProfile, UserServiceService } from '../../services/user-servic
 })
 export class UserprofileComponent implements OnInit {
   user: JobSeekerProfile = {
-    jobSeekerId: 0, // Replace with actual logged-in user ID
+    jobSeekerId: 0, 
     dateOfBirth: '',
     gender: '',
     address: '',
@@ -37,7 +37,7 @@ export class UserprofileComponent implements OnInit {
     const userIn = localStorage.getItem('user');
     console.log(userIn)
   if (userIn) {
-    this.jobSeeker = JSON.parse(userIn); // 👈 Parse the string to an object
+    this.jobSeeker = JSON.parse(userIn); 
     console.log(this.jobSeeker);
   }
   }

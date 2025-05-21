@@ -28,36 +28,7 @@ export class RecruitersLoginComponent {
     });
   }
 
-//   login() {
-//     if (this.loginForm.invalid) {
-//       this.errorMessage = 'Please fill out all fields correctly.';
-//       return;
-//     }
 
-//     const { email, password } = this.loginForm.value;
-
-//     this.authService.loginRecruiter(email, password).subscribe({
-//       next: (res) => {
-        
-//         if (res?.success) {
-//           this.errorMessage = '';
-//           console.log(res);
-//           localStorage.setItem("recruiterId",res.data.recruiterId);
-//         localStorage.setItem("loggedRecruiter",res.data);
-//         console.log(localStorage.getItem("recruiterId"));
-//         console.log(res);
-//           alert('Login Successful');
-//           this.router.navigate(['/dashboard']); // adjust route
-//         } else {
-//           this.errorMessage = res.message || 'Login failed';
-//         }
-//       },
-//       error: (err) => {
-//         this.errorMessage = err?.error?.message || 'Server error. Please try again.';
-//       }
-//     });
-//   }
-// }
 login() {
   this.errorMessage = '';
   this.successMessage = '';
@@ -79,7 +50,7 @@ login() {
 
         setTimeout(() => {
           this.router.navigate(['/dashboard']);
-        }, 1500); // Navigate after showing success
+        }, 1500); 
       } else {
         this.errorMessage = res.message || 'Login failed';
         this.successMessage = '';

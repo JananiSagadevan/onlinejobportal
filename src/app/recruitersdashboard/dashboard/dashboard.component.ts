@@ -32,44 +32,9 @@ export interface ApplicationStatusCount {
 export class DashboardComponent implements OnInit {
   stats: RecruiterDashboardStats | null = null;
   recruiterId: number = 0;
-  recruiterName = 'Recruiter'; // Optionally set this from login/session
-  // barChartData: ChartData<'bar'> = {
-  //   labels: ['Jan', 'Feb', 'Mar', 'Apr'],
-  //   datasets: [
-  //     {
-  //       label: 'Applications',
-  //       data: [10, 20, 30, 15],
-  //       backgroundColor: 'rgba(54, 162, 235, 0.6)',
-  //       borderColor: 'rgba(54, 162, 235, 1)',
-  //       borderWidth: 1
-  //     }
-  //   ]
-  // };
-  // barChartLabels: string[] = [];
-  // barChartType: ChartType = 'bar';
-  barChartOptions: ChartOptions<'bar'> = {
-    responsive: true,
-    plugins: {
-      legend: { display: false },
-      title: {
-        display: true,
-        text: 'Application Status Overview'
-      }
-    }
-  };
+  recruiterName = 'Recruiter'; 
+ 
 
-  barChartData: ChartData<'bar'> = {
-    labels: [],
-    datasets: [
-      {
-        label: 'Applications',
-        data: [],
-        backgroundColor: [
-          '#f0ad4e', '#5bc0de', '#0275d8', '#5cb85c', '#d9534f'
-        ]
-      }
-    ]
-  };
   
   constructor(private RecruiterserviceService: RecruiterserviceService) {}
 
@@ -94,8 +59,7 @@ export class DashboardComponent implements OnInit {
         const labels = response.map(item => item.currentStatus);
         const data = response.map(item => item.statusCount);
 
-        this.barChartData.labels = labels;
-        this.barChartData.datasets[0].data = data;
+        
       });
       },
       error: (err: any) => {
@@ -103,21 +67,5 @@ export class DashboardComponent implements OnInit {
       }
     });
   }
-  // loadStatusChart(): void {
-  //   this.RecruiterserviceService.getApplicationStatusCounts(this.recruiterId).subscribe({
-  //     next: (data: ApplicationStatusCount[]) => {
-  //       this.barChartLabels = data.map(d => d.currentStatus);
-  //       // this.barChartData = [
-  //       //   {
-  //       //     data: data.map(d => d.statusCount),
-  //       //     label: 'Applications by Status',
-  //       //     backgroundColor: '#42A5F5'
-  //       //   }
-  //       // ];
-  //     },
-  //     error: (err) => {
-  //       console.error('Error fetching chart data:', err);
-  //     }
-  //   });
-  // }
+
 }

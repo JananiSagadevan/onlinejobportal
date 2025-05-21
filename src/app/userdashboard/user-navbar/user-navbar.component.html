@@ -1,4 +1,4 @@
-  <div class="sidebar">
+  <!-- <div class="sidebar">
       <h2>Job Portal</h2>
       <ul>
         <li>
@@ -30,6 +30,101 @@
           <a class="nav-link text-white" href="/">
             <i class="bi bi-box-arrow-right me-2"></i> Logout
           </a>
+        </li>
+      </ul>
+    </div>
+     -->
+     <!-- <div class="sidebar">
+      <h2>Job Portal</h2>
+      <ul>
+        <li>
+          <button class="btn nav-link text-white w-100 text-start" [routerLink]="'/userdashboard'">
+            <i class="bi bi-person-workspace me-2"></i> User Dashboard
+          </button>
+        </li>
+        <li>
+          <button class="btn nav-link text-white w-100 text-start" [routerLink]="'/userprofile'">
+            <i class="bi bi-person me-2"></i> Profile
+          </button>
+        </li>
+        <li>
+          <button class="btn nav-link text-white w-100 text-start" [routerLink]="'/psychometric-test'">
+            <i class="bi bi-plus-circle me-2"></i> Psychometric Test
+          </button>
+        </li>
+        <li>
+          <button class="btn nav-link text-white w-100 text-start" [routerLink]="'/applyjobs'">
+            <i class="bi bi-briefcase me-2"></i> Apply Jobs
+          </button>
+        </li>
+        <li>
+          <button class="btn nav-link text-white w-100 text-start" [routerLink]="'/appliedjobs'">
+            <i class="fa-solid fa-paper-plane me-2"></i> Applied Jobs
+          </button>
+        </li>
+        <li>
+          <button class="btn nav-link text-white w-100 text-start" [routerLink]="'/'">
+            <i class="bi bi-box-arrow-right me-2"></i> Logout
+          </button>
+        </li>
+      </ul>
+    </div>
+     -->
+     <div class="sidebar">
+      <h2>Job Portal</h2>
+      <ul>
+        <li>
+          <button
+            class="btn nav-link text-white w-100 text-start"
+            [class.active]="currentRoute === '/userdashboard'"
+            (click)="navigate('/userdashboard')"
+          >
+            <i class="bi bi-person-workspace me-2"></i> User Dashboard
+          </button>
+        </li>
+        <li>
+          <button
+            class="btn nav-link text-white w-100 text-start"
+            [class.active]="currentRoute === '/userprofile'"
+            (click)="navigate('/userprofile')"
+          >
+            <i class="bi bi-person me-2"></i> Profile
+          </button>
+        </li>
+        <li>
+          <button
+            class="btn nav-link text-white w-100 text-start"
+            [class.active]="currentRoute === '/psychometric-test'"
+            (click)="navigate('/psychometric-test')"
+          >
+            <i class="bi bi-plus-circle me-2"></i> Psychometric Test
+          </button>
+        </li>
+        <li>
+          <button
+            class="btn nav-link text-white w-100 text-start"
+            [class.active]="currentRoute === '/applyjobs'"
+            (click)="navigate('/applyjobs')"
+          >
+            <i class="bi bi-briefcase me-2"></i> Apply Jobs
+          </button>
+        </li>
+        <li>
+          <button
+            class="btn nav-link text-white w-100 text-start"
+            [class.active]="currentRoute === '/appliedjobs'"
+            (click)="navigate('/appliedjobs')"
+          >
+            <i class="fa-solid fa-paper-plane me-2"></i> Applied Jobs
+          </button>
+        </li>
+        <li>
+          <button
+            class="btn nav-link text-white w-100 text-start"
+            (click)="navigateLogout()"
+          >
+            <i class="bi bi-box-arrow-right me-2"></i> Logout
+          </button>
         </li>
       </ul>
     </div>
