@@ -28,7 +28,11 @@ export class UserNavbarComponent implements OnInit {
   }
 
   navigateLogout() {
+    const confirmed = confirm("Are you sure you want to logout?");
+    if (confirmed) {
+      localStorage.clear(); // Clear login/session data
     // Clear user session, tokens, or any cleanup here
     this.router.navigate(['/']);
   }
+}
 }

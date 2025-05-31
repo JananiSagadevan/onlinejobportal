@@ -56,7 +56,32 @@ export class UserServiceService {
   private apiUrl = 'http://localhost:5174/api';
   constructor(private http: HttpClient) {}
 
+//   uploadImage(file: File): Observable<any> {
+//     const formData = new FormData();
+    
+//     const userId = this.authService.getUserId();
+//     if (userId !== null) {
+//       formData.append('UserId', userId.toString());
+//     } else {
+//       console.error('UserId is missing!');
+//       return new Observable(observer => {
+//         observer.error('UserId is missing!');
+//       });
+//     }
+//     formData.append('file', file);
+//  //  Make sure this matches backend parameter
+//     console.log('Sending form data with:', {
+//     file: file.name,
+//     userId: userId
+//   });
+//     return this.http.post(`${this.baseUrl}/upload-image`, formData);
+//   }
+  createProfile1(profile: JobSeekerProfile): Observable<any> {
+    
+    return this.http.post(`${this.baseUrl}/createprofile`, profile);
+  }
   createProfile(profile: JobSeekerProfile): Observable<any> {
+
     return this.http.post(`${this.baseUrl}/createprofile`, profile);
   }
 

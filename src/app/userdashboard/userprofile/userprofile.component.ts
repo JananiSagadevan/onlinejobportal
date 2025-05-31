@@ -41,6 +41,44 @@ export class UserprofileComponent implements OnInit {
     console.log(this.jobSeeker);
   }
   }
+  // onFileSelected(event: any): void {
+  //   const file = event.target.files[0];
+  //   if (file) {
+  //     this.selectedFile = file;
+
+  //     const reader = new FileReader();
+  //     reader.onload = () => {
+  //       this.imagePreviewUrl = reader.result;
+  //     };
+  //     reader.readAsDataURL(file);
+  //   }
+  // }
+
+
+  // uploadFile(): void {
+  //   this.statusMessage = '';
+  //   this.extractedText = '';
+  //   if (!this.userId) {
+  //     this.statusMessage = 'User ID is missing.';
+  //     return;
+  //   }
+  //   if (!this.selectedFile) {
+  //     this.statusMessage = 'Please select a file.';
+  //     return;
+  //   }
+
+  //   this.ocrService.uploadImage(this.selectedFile).subscribe({
+  //     next: (res) => {
+  //       console.log('Upload Success:', res)
+  //       this.statusMessage = 'Upload successful!';
+  //       this.getExtractedText();
+  //     },
+  //     error: (err) => {
+  //       console.error("Upload failed:", err); // Full backend error
+  //       this.statusMessage = err?.errorr?.message || 'Upload failed. Server error.';
+  //     }
+  //   });
+  // }
 
   getProfile(): void {
     this.jobSeekerService.getProfile(this.user.jobSeekerId).subscribe(response => {
